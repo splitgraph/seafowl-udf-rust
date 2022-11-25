@@ -1,0 +1,16 @@
+[package]
+name = "seafowl-udf-rust"
+version = "0.0.1"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0"
+serde = { version = "1.0.145", features = ["derive"] }
+rmp = "0.8.11"
+rmp-serde = "1.1.1"
+rmpv = { version= "1.0.0", features = ["with-serde"]}
+
+[lib]
+crate-type = ['cdylib']
