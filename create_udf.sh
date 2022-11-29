@@ -10,19 +10,19 @@ joinByString() {
 
 # Parameters to set
 filename="target/wasm32-wasi/release/seafowl_udf_rust.wasm"
-function_name="add_i643"
+function_name="add_i64"
 wasm_export="add_i64"
 return_type="BIGINT"
 input_types=("BIGINT" "BIGINT")
+host="localhost:8080"
 
-cat << EndOfMessage
-CREATE FUNCTION $function_name AS '
-{
-  "entrypoint": "$wasm_export",
-  "language": "wasmMessagePack",
-  "input_types": ["$(joinByString '", "' "${input_types[@]}")"],
-  "return_type": "$return_type",
-  "data": "$(base64 -i $filename)"
-}';
+curl -i -H "Content-Type: application/json" $host/q -d@- <<EndOfMessage
+{"query": "CREATE FUNCTION $function_name AS '{
+  \"entrypoint\": \"$wasm_export\",
+  \"language\": \"wasmMessagePack\",
+  \"input_types\": [\"$(joinByString '\", \"' "${input_types[@]}")\"],
+  \"return_type\": \"$return_type\",
+  \"data\": \"$(base64 -i $filename)\"
+}';"}
 EndOfMessage
 

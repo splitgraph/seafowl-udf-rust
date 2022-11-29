@@ -26,26 +26,30 @@ Messages sent to `stderr` via `eprintln!()` will be visible in the Seafowl conso
 
 A WASM module may include multiple user-defined functions, but each one must be loaded with a separate `CREATE FUNCTION ...` statement.
 
-
 # Loading the WASM module into Seafowl as a UDF
 
-This repository includes the `create_udf.sh` shell script to create the
-`CREATE FUNCTION ...` expression used to define the Seafowl UDF.
+This repository includes the `create_udf.sh` shell script which creates the Seafowl function wrapping the Rust WASM logic.
+Be sure to update the parameters within this file to match your own UDFs' name and signature.
 
-To load the example `add_i64()` function into Seafowl, run the following:
+To use the script as-is, start a local Seafowl instance with HTTP write access enabled, eg:
 
 ```bash
-./create_udf.sh > create_udf.sql
-seafowl/examples/clients/node/seafowl-client.js -f create_udf.sql
+SEAFOWL__FRONTEND__HTTP__WRITE_ACCESS=any ./target/release/seafowl
+```
+
+To load the example `add_i64()` function into a locally running Seafowl, just run:
+
+```bash
+./create_udf.sh 
 ```
 
 Invoking the newly created UDF:
 
 ```bash
-seafowl/examples/clients/node/seafowl-client.js 'SELECT add_i64(1,2)'
+./query_udf.sh
 ```
 
-Edit `create_udf.sh` to set UDF parameters such as the name or input / return types.
+Edit `query_udf.sh` to change the function's arguments or run more complex queries.
 
 # Running unit tests
 
