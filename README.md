@@ -29,13 +29,13 @@ A WASM module may include multiple user-defined functions, but each one must be 
 
 # Loading the WASM module into Seafowl as a UDF
 
-This repository includes the `make_create_function_sql.js` helper script to create the
+This repository includes the `create_udf.sh` shell script to create the
 `CREATE FUNCTION ...` expression used to define the Seafowl UDF.
 
 To load the example `add_i64()` function into Seafowl, run the following:
 
 ```bash
-node make_create_function_sql.js add_i64 add_i64 target/wasm32-wasi/release/seafowl_udf_rust.wasm > create_udf.sql
+./create_udf.sh > create_udf.sql
 seafowl/examples/clients/node/seafowl-client.js -f create_udf.sql
 ```
 
@@ -45,8 +45,7 @@ Invoking the newly created UDF:
 seafowl/examples/clients/node/seafowl-client.js 'SELECT add_i64(1,2)'
 ```
 
-The input types and return type of the UDF is hardcoded into `make_create_function_sql.js`,
-override these for UDF signatures other than `(i64, i64) -> i64`.
+Edit `create_udf.sh` to set UDF parameters such as the name or input / return types.
 
 # Running unit tests
 
